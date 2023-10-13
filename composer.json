@@ -2,8 +2,14 @@
     "name": "mitrovicsinisaa/php-google-people-api",
     "description": "This package provides a user friendly way of interacting with Google Contacts via the Google People API.",
     "type": "library",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mitrovicsinisaa/php-google-oauth-2-handler.git"
+        }
+    ],
     "require": {
-        "rapidwebltd/php-google-oauth-2-handler": "^1.1.1"
+        "mitrovicsinisaa/php-google-oauth-2-handler": "^2.0.0"
     },
     "license": "LGPL-3.0-only",
     "authors": [

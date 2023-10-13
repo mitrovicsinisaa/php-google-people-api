@@ -7,11 +7,11 @@ use RapidWeb\GoogleOAuth2Handler\GoogleOAuth2Handler;
 
 class GooglePeople
 {
-    private $googleOAuth2Handler;
+    private \RapidWeb\GoogleOAuth2Handler\GoogleOAuth2Handler $googleOAuth2Handler;
 
-    const PERSON_FIELDS = ['addresses', 'ageRanges', 'biographies', 'birthdays', 'braggingRights', 'coverPhotos', 'emailAddresses', 'events', 'genders', 'imClients', 'interests', 'locales', 'memberships', 'metadata', 'names', 'nicknames', 'occupations', 'organizations', 'phoneNumbers', 'photos', 'relations', 'relationshipInterests', 'relationshipStatuses', 'residences', 'skills', 'taglines', 'urls'];
-    const UPDATE_PERSON_FIELDS = ['addresses', 'biographies', 'birthdays', 'braggingRights', 'emailAddresses', 'events', 'genders', 'imClients', 'interests', 'locales', 'names', 'nicknames', 'occupations', 'organizations', 'phoneNumbers', 'relations', 'residences', 'skills', 'urls'];
-    const PEOPLE_BASE_URL = 'https://people.googleapis.com/v1/';
+    public const PERSON_FIELDS = ['addresses', 'ageRanges', 'biographies', 'birthdays', 'braggingRights', 'coverPhotos', 'emailAddresses', 'events', 'genders', 'imClients', 'interests', 'locales', 'memberships', 'metadata', 'names', 'nicknames', 'occupations', 'organizations', 'phoneNumbers', 'photos', 'relations', 'relationshipInterests', 'relationshipStatuses', 'residences', 'skills', 'taglines', 'urls'];
+    public const UPDATE_PERSON_FIELDS = ['addresses', 'biographies', 'birthdays', 'braggingRights', 'emailAddresses', 'events', 'genders', 'imClients', 'interests', 'locales', 'names', 'nicknames', 'occupations', 'organizations', 'phoneNumbers', 'relations', 'residences', 'skills', 'urls'];
+    public const PEOPLE_BASE_URL = 'https://people.googleapis.com/v1/';
 
     public function __construct(GoogleOAuth2Handler $googleOAuth2Handler)
     {
@@ -47,7 +47,7 @@ class GooglePeople
             throw new Exception($body);
         }
 
-        $contact = json_decode($body);
+        $contact = json_decode($body, null, 512, JSON_THROW_ON_ERROR);
 
         return $this->convertResponseConnectionToContact($contact);
     }
@@ -63,7 +63,7 @@ class GooglePeople
             throw new Exception($body);
         }
 
-        $responseObj = json_decode($body);
+        $responseObj = json_decode($body, null, 512, JSON_THROW_ON_ERROR);
 
         $contacts = [];
 
@@ -82,7 +82,7 @@ class GooglePeople
                 throw new Exception($body);
             }
 
-            $responseObj = json_decode($body);
+            $responseObj = json_decode($body, null, 512, JSON_THROW_ON_ERROR);
 
             foreach($responseObj->connections as $connection) {
                 $contacts[] = $this->convertResponseConnectionToContact($connection);
@@ -123,7 +123,7 @@ class GooglePeople
             }
         }
 
-        $requestBody = json_encode($requestObj);
+        $requestBody = json_encode($requestObj, JSON_THROW_ON_ERROR);
 
         $response = $this->googleOAuth2Handler->performRequest($method, $url, $requestBody);
         $body = (string) $response->getBody();
@@ -132,7 +132,7 @@ class GooglePeople
             throw new Exception($body);
         }
 
-        $responseObj = json_decode($body);
+        $responseObj = json_decode($body, null, 512, JSON_THROW_ON_ERROR);
 
         return $this->convertResponseConnectionToContact($responseObj);
     }
